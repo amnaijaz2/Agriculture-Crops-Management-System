@@ -18,15 +18,25 @@ This system simulates a **real-world agricultural marketplace**, allowing farmer
 ## 📁 Project Structure
 
 Crops/
+
 ├── config/ # Django project settings
+
 ├── authentication/ # Auth (login, register, JWT)
+
 ├── users/ # User CRUD & roles
+
 ├── crops/ # Crops CRUD
+
 ├── orders/ # Orders & status tracking
+
 ├── dashboards/ # Role-based dashboards
+
 ├── templates/ # HTML templates
+
 ├── static/ # CSS, JS
+
 ├── manage.py
+
 └── requirements.txt
 
 
