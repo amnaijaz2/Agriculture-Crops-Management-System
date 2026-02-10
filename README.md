@@ -128,15 +128,6 @@ Orders
 | PATCH  | /api/orders/{id}/update_status/ | Update status        |
 | GET    | /api/orders/{id}/history/       | Order status history |
 
-Using the API with JWT
-# Login
-curl -X POST http://127.0.0.1:8000/api/auth/login/ \
--H "Content-Type: application/json" \
--d '{"username":"admin","password":"admin123"}'
-
-# Use the returned access token
-curl http://127.0.0.1:8000/api/crops/ \
--H "Authorization: Bearer <access_token>"
 
 👥 User Roles & Permissions
 
