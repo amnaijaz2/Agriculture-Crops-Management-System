@@ -16,7 +16,6 @@ Authentication: JWT (Simple JWT)
 Roles: Admin, Farmer, Broker, Client
 
 📁 Project Structure
-📁 Project Structure
 
 Crops/
 
