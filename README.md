@@ -10,6 +10,11 @@ Frontend: Django templates with Bootstrap 5
 
 Database: PostgreSQL (SQLite for quick local development)
 
+Authentication: JWT (Simple JWT)
+
+Roles: Admin, Farmer, Broker, Client
+
+📁 Project Structure
 Crops/
 ├── config/             # Django project settings
 ├── authentication/     # Auth (login, register, JWT)
@@ -25,17 +30,26 @@ Crops/
 ⚙️ Setup Instructions
 
 Create Virtual Environment
+
 cd Crops
 python -m venv venv
+
 # Windows
 venv\Scripts\activate
+
 # Linux/Mac
 source venv/bin/activate
 
+
 Install Dependencies
+
 pip install -r requirements.txt
 
+
 Environment Configuration
+
+Create a .env file in the project root (copy from .env.example):
+
 DEBUG=True
 SECRET_KEY=your-secret-key-here
 ALLOWED_HOSTS=localhost,127.0.0.1
@@ -51,12 +65,17 @@ DB_PASSWORD=your_password
 DB_HOST=localhost
 DB_PORT=5432
 
+
 Run Migrations
+
 python manage.py makemigrations users crops orders
 python manage.py migrate
 
-Seed Sample Data 
+
+Seed Sample Data (Optional)
+
 python manage.py seed_data
+
 
 This creates:
 
@@ -78,6 +97,9 @@ python manage.py createsuperuser
 Run Development Server
 
 python manage.py runserver
+
+
+Visit: http://127.0.0.1:8000/
 
 🔗 API Endpoints
 Authentication
@@ -117,9 +139,6 @@ curl -X POST http://127.0.0.1:8000/api/auth/login/ \
 # Use the returned access token
 curl http://127.0.0.1:8000/api/crops/ \
 -H "Authorization: Bearer <access_token>"
-
-Roles: Admin, Farmer, Broker, Client
-Authentication: JWT (Simple JWT)
 ## User Roles & Permissions
 
 | Role   | Dashboard | Crops  | Orders | Users |
