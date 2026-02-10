@@ -1,6 +1,7 @@
 🌾 Agriculture Crops Management System
 
-A full-stack Django application for managing agriculture crops, users, and orders with JWT authentication and role-based access control.
+A **full-stack Django application** for managing agriculture crops, users, and orders with **JWT authentication** and **role-based access control**.  
+This system simulates a **real-world agricultural marketplace**, allowing farmers to list crops, brokers to manage listings, clients to place orders, and admins to oversee the entire system.
 
 🛠 Technology Stack
 
@@ -15,17 +16,30 @@ Authentication: JWT (Simple JWT)
 Roles: Admin, Farmer, Broker, Client
 
 📁 Project Structure
+📁 Project Structure
+
 Crops/
-├── config/             # Django project settings
-├── authentication/     # Auth (login, register, JWT)
-├── users/              # User CRUD, roles
-├── crops/              # Crops CRUD
-├── orders/             # Orders, status tracking
-├── dashboards/         # Role-based dashboards
-├── templates/          # HTML templates
-├── static/             # CSS, JS
-├── manage.py
-└── requirements.txt
+
+       config/             # Django project settings
+    
+       authentication/     # Auth (login, register, JWT)
+    
+       users/              # User CRUD, roles
+    
+       crops/              # Crops CRUD
+    
+       orders/             # Orders, status tracking
+    
+       dashboards/         # Role-based dashboards
+    
+      templates/          # HTML templates
+    
+      static/             # CSS, JS
+    
+      manage.py
+    
+      requirements.txt
+
 
 ⚙️ Setup Instructions
 
@@ -33,10 +47,8 @@ Create Virtual Environment
 
 cd Crops
 python -m venv venv
-
 # Windows
 venv\Scripts\activate
-
 # Linux/Mac
 source venv/bin/activate
 
@@ -44,26 +56,6 @@ source venv/bin/activate
 Install Dependencies
 
 pip install -r requirements.txt
-
-
-Environment Configuration
-
-Create a .env file in the project root (copy from .env.example):
-
-DEBUG=True
-SECRET_KEY=your-secret-key-here
-ALLOWED_HOSTS=localhost,127.0.0.1
-
-# For SQLite (quick start - no PostgreSQL needed)
-DB_ENGINE=sqlite
-
-# For PostgreSQL
-DB_ENGINE=postgresql
-DB_NAME=crops_db
-DB_USER=postgres
-DB_PASSWORD=your_password
-DB_HOST=localhost
-DB_PORT=5432
 
 
 Run Migrations
@@ -102,34 +94,41 @@ python manage.py runserver
 Visit: http://127.0.0.1:8000/
 
 🔗 API Endpoints
-Authentication
-Method	Endpoint	Description
-POST	/api/auth/register/	Register
-POST	/api/auth/login/	Login (returns JWT)
-POST	/api/auth/token/refresh/	Refresh JWT
-GET	/api/auth/profile/	Current user (requires JWT)
-POST	/api/auth/logout/	Logout
+| Method | Endpoint                 | Description                 |
+| ------ | ------------------------ | --------------------------- |
+| POST   | /api/auth/register/      | Register                    |
+| POST   | /api/auth/login/         | Login (returns JWT)         |
+| POST   | /api/auth/token/refresh/ | Refresh JWT                 |
+| GET    | /api/auth/profile/       | Current user (requires JWT) |
+| POST   | /api/auth/logout/        | Logout                      |
+
 Users (Admin only)
-Method	Endpoint	Description
-GET	/api/users/	List users
-POST	/api/users/	Create user
-GET	/api/users/{id}/	User detail
-PUT	/api/users/{id}/	Update user
-DELETE	/api/users/{id}/	Delete user
+| Method | Endpoint         | Description |
+| ------ | ---------------- | ----------- |
+| GET    | /api/users/      | List users  |
+| POST   | /api/users/      | Create user |
+| GET    | /api/users/{id}/ | User detail |
+| PUT    | /api/users/{id}/ | Update user |
+| DELETE | /api/users/{id}/ | Delete user |
+
 Crops
-Method	Endpoint	Description
-GET	/api/crops/	List crops
-POST	/api/crops/	Create crop (Farmer/Admin)
-GET	/api/crops/{id}/	Crop detail
-PUT	/api/crops/{id}/	Update crop
-DELETE	/api/crops/{id}/	Delete crop
+| Method | Endpoint         | Description                |
+| ------ | ---------------- | -------------------------- |
+| GET    | /api/crops/      | List crops                 |
+| POST   | /api/crops/      | Create crop (Farmer/Admin) |
+| GET    | /api/crops/{id}/ | Crop detail                |
+| PUT    | /api/crops/{id}/ | Update crop                |
+| DELETE | /api/crops/{id}/ | Delete crop                |
+
 Orders
-Method	Endpoint	Description
-GET	/api/orders/	List orders
-POST	/api/orders/	Place order
-GET	/api/orders/{id}/	Order detail
-PATCH	/api/orders/{id}/update_status/	Update status
-GET	/api/orders/{id}/history/	Order status history
+| Method | Endpoint                        | Description          |
+| ------ | ------------------------------- | -------------------- |
+| GET    | /api/orders/                    | List orders          |
+| POST   | /api/orders/                    | Place order          |
+| GET    | /api/orders/{id}/               | Order detail         |
+| PATCH  | /api/orders/{id}/update_status/ | Update status        |
+| GET    | /api/orders/{id}/history/       | Order status history |
+
 Using the API with JWT
 # Login
 curl -X POST http://127.0.0.1:8000/api/auth/login/ \
@@ -139,7 +138,8 @@ curl -X POST http://127.0.0.1:8000/api/auth/login/ \
 # Use the returned access token
 curl http://127.0.0.1:8000/api/crops/ \
 -H "Authorization: Bearer <access_token>"
-## User Roles & Permissions
+
+👥 User Roles & Permissions
 
 | Role   | Dashboard | Crops  | Orders | Users |
 |--------|-----------|--------|--------|-------|
@@ -148,6 +148,4 @@ curl http://127.0.0.1:8000/api/crops/ \
 | Broker | Listings  | View   | Manage | -     |
 | Client | My orders | Browse | Place  | -     |
 
-## License
 
-MIT
