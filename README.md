@@ -1,150 +1,136 @@
-# Agriculture Crops Management System
+🌾 Agriculture Crops Management System (Django)
 
-A full-stack Django application for managing agriculture crops, users, and orders with JWT authentication and role-based access control.
+A full-stack Agriculture Crops Management System built using Python Django and Django REST Framework.  
+The system is designed to manage crops, users, and orders with role-based dashboards, JWT authentication, and a clean, modern UI.
 
-## Technology Stack
+This project simulates a real-world agricultural marketplace where:
+- Farmers list crops
+- Brokers manage listings
+- Clients place orders
+- Admins oversee the entire system
 
-- **Backend:** Django 5, Django REST Framework
-- **Frontend:** Django templates with Bootstrap 5
-- **Database:** PostgreSQL (SQLite for quick local dev)
-- **Authentication:** JWT (Simple JWT)
-- **Roles:** Admin, Farmer, Broker, Client
+---
 
-## Project Structure
+🚀 Features
 
-```
+🔐 Authentication & Authorization
+- User Registration & Login
+- JWT-based Authentication (Simple JWT)
+- Role-based Access Control (Admin, Farmer, Broker, Client)
+
+👥 User Roles
+- **Admin** – Manage users, crops, reports, approvals
+- **Farmer** – Add and manage crops, stock, and pricing
+- **Broker** – Manage crop listings and coordinate sales
+- **Client** – Browse crops, place orders, and track order status
+
+🌱 Crops Management (CRUD)
+- Add, update, delete, and view crops
+- Crop details: name, type, quantity, price, farmer, location, status
+
+📦 Orders Management
+- Place orders
+- Track order status
+- View order history
+
+📊 Dashboards
+- Role-based dashboards
+- Statistics cards
+- Tables and recent activity overview
+
+---
+
+🛠 Technology Stack
+
+- **Backend:** Python, Django 5, Django REST Framework  
+- **Frontend:** Django Templates, Bootstrap 5, JavaScript  
+- **Database:** PostgreSQL (SQLite for quick local development)  
+- **Authentication:** JWT (Simple JWT)  
+- **Architecture:** RESTful APIs  
+
+---
+
+📁 Project Structure
+
 Crops/
 ├── config/                 # Django project settings
 ├── authentication/         # Auth (login, register, JWT)
-├── users/                  # User CRUD, roles
+├── users/                  # User CRUD & roles
 ├── crops/                  # Crops CRUD
-├── orders/                 # Orders, status tracking
+├── orders/                 # Orders & status tracking
 ├── dashboards/             # Role-based dashboards
 ├── templates/              # HTML templates
-├── static/                 # CSS, JS
+├── static/                 # CSS & JavaScript
 ├── manage.py
 └── requirements.txt
-```
+⚙️ Installation & Setup
 
-## Setup Instructions
-
-### 1. Create Virtual Environment
-
-```bash
+1️⃣ Clone the Repository
+git clone https://github.com/amnaijaz2/Agriculture-Crops-Management-System.git
 cd Crops
+2️⃣ Create & Activate Virtual Environment
 python -m venv venv
 
 # Windows
 venv\Scripts\activate
 
-# Linux/Mac
+# Linux / Mac
 source venv/bin/activate
-```
-
-### 2. Install Dependencies
-
-```bash
+3️⃣ Install Dependencies
 pip install -r requirements.txt
-```
+4️⃣ Environment Configuration
+Create a .env file in the project root:
 
-### 3. Environment Configuration
-
-Create a `.env` file in the project root (copy from `.env.example`):
-
-```env
 DEBUG=True
-SECRET_KEY=your-secret-key-here
+SECRET_KEY=your-secret-key
 ALLOWED_HOSTS=localhost,127.0.0.1
 
-# For SQLite (quick start - no PostgreSQL needed)
+# SQLite (quick start)
 DB_ENGINE=sqlite
 
-# For PostgreSQL
+# PostgreSQL (production)
 DB_ENGINE=postgresql
 DB_NAME=crops_db
 DB_USER=postgres
 DB_PASSWORD=your_password
 DB_HOST=localhost
 DB_PORT=5432
-```
-
-### 4. Run Migrations
-
-```bash
-python manage.py makemigrations users crops orders
+5️⃣ Run Migrations
+python manage.py makemigrations
 python manage.py migrate
-```
-
-### 5. Seed Sample Data (Optional)
-
-```bash
-python manage.py seed_data
-```
-
-This creates:
-- **Admin:** admin / admin123
-- **Farmers:** farmer1, farmer2 / farmer123
-- **Broker:** broker1 / broker123
-- **Clients:** client1, client2 / client123
-- Sample crops and orders
-
-### 6. Create Superuser (if not using seed)
-
-```bash
+6️⃣ Create Superuser
 python manage.py createsuperuser
-```
-
-### 7. Run Development Server
-
-```bash
+7️⃣ Run Development Server
 python manage.py runserver
-```
-
 Visit: http://127.0.0.1:8000/
 
-## API Endpoints
+🔑 API Authentication (JWT)
 
-### Authentication
-- `POST /api/auth/register/` - Register
-- `POST /api/auth/login/` - Login (returns JWT)
-- `POST /api/auth/token/refresh/` - Refresh JWT
-- `GET /api/auth/profile/` - Current user (requires JWT)
-- `POST /api/auth/logout/` - Logout
+POST /api/auth/register/ – Register
 
-### Users (Admin only)
-- `GET /api/users/` - List users
-- `POST /api/users/` - Create user
-- `GET /api/users/{id}/` - User detail
-- `PUT /api/users/{id}/` - Update user
-- `DELETE /api/users/{id}/` - Delete user
+POST /api/auth/login/ – Login (returns JWT)
 
-### Crops
-- `GET /api/crops/` - List crops
-- `POST /api/crops/` - Create crop (Farmer/Admin)
-- `GET /api/crops/{id}/` - Crop detail
-- `PUT /api/crops/{id}/` - Update crop
-- `DELETE /api/crops/{id}/` - Delete crop
+POST /api/auth/token/refresh/ – Refresh token
 
-### Orders
-- `GET /api/orders/` - List orders
-- `POST /api/orders/` - Place order
-- `GET /api/orders/{id}/` - Order detail
-- `PATCH /api/orders/{id}/update_status/` - Update status
-- `GET /api/orders/{id}/history/` - Order status history
+GET /api/auth/profile/ – Current user (JWT required)
 
-### Using the API with JWT
+Example:
 
-```bash
-# Login
 curl -X POST http://127.0.0.1:8000/api/auth/login/ \
-  -H "Content-Type: application/json" \
-  -d '{"username":"admin","password":"admin123"}'
+-H "Content-Type: application/json" \
+-d '{"username":"admin","password":"admin123"}'
+📸 Screenshots (Add Your Images Here)
 
-# Use the returned access token
-curl http://127.0.0.1:8000/api/crops/ \
-  -H "Authorization: Bearer <access_token>"
-```
+Login / Registration Pages
 
+Admin / Farmer / Broker / Client Dashboards
+
+Crops Management Pages
+
+Orders Pages
+
+Add images using markdown syntax:
+![Alt text](screenshots/login.png)
 ## User Roles & Permissions
 
 | Role   | Dashboard | Crops  | Orders | Users |
