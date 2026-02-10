@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - Crops Management{% endblock %}
+{% block content %}
+<div class="page-header animate-fade-in">
+    <h2><i class="bi bi-speedometer2 me-2"></i>Dashboard</h2>
+    <p class="text-muted">Welcome back, {{ user.username }}!</p>
+</div>
+
+{% if user.role == 'ADMIN' %}
+<div class="row g-4 mb-4">
+    <div class="col-md-3"><div class="card stat-card p-4 animate-slide-up" style="animation-delay: 0.1s"><h5 class="text-muted">Total Users</h5><h3 class="text-primary">{{ total_users }}</h3></div></div>
+    <div class="col-md-3"><div class="card stat-card p-4 animate-slide-up" style="animation-delay: 0.2s"><h5 class="text-muted">Total Crops</h5><h3 class="text-success">{{ total_crops }}</h3></div></div>
+    <div class="col-md-3"><div class="card stat-card p-4 animate-slide-up" style="animation-delay: 0.3s"><h5 class="text-muted">Total Orders</h5><h3 class="text-info">{{ total_orders }}</h3></div></div>
+    <div class="col-md-3"><div class="card stat-card p-4 animate-slide-up" style="animation-delay: 0.4s"><h5 class="text-muted">Revenue</h5><h3>${{ total_revenue|floatformat:2 }}</h3></div></div>
+</div>
+{% elif user.role == 'FARMER' %}
+<div class="row g-4 mb-4">
+    <div class="col-md-3"><div class="card stat-card p-4 animate-slide-up"><h5 class="text-muted">My Crops</h5><h3>{{ total_crops }}</h3></div></div>
+    <div class="col-md-3"><div class="card stat-card p-4 animate-slide-up"><h5 class="text-muted">Total Stock</h5><h3>{{ total_stock }} kg</h3></div></div>
+    <div class="col-md-3"><div class="card stat-card p-4 animate-slide-up"><h5 class="text-muted">Orders</h5><h3>{{ total_orders }}</h3></div></div>
+    <div class="col-md-3"><div class="card stat-card p-4 animate-slide-up"><h5 class="text-muted">Revenue</h5><h3>${{ total_revenue|floatformat:2 }}</h3></div></div>
+</div>
+{% elif user.role == 'BROKER' %}
+<div class="row g-4 mb-4">
+    <div class="col-md-4"><div class="card stat-card p-4 animate-slide-up"><h5 class="text-muted">Available Crops</h5><h3>{{ total_crops }}</h3></div></div>
+    <div class="col-md-4"><div class="card stat-card p-4 animate-slide-up"><h5 class="text-muted">Total Orders</h5><h3>{{ total_orders }}</h3></div></div>
+    <div class="col-md-4"><div class="card stat-card p-4 animate-slide-up"><h5 class="text-muted">Actions</h5><a href="{% url 'orders:order_list' %}" class="btn btn-primary btn-sm">Manage Orders</a></div></div>
+</div>
+{% else %}
+<div class="row g-4 mb-4">
+    <div class="col-md-4"><div class="card stat-card p-4 animate-slide-up"><h5 class="text-muted">My Orders</h5><h3>{{ total_orders }}</h3></div></div>
+    <div class="col-md-4"><div class="card stat-card p-4 animate-slide-up"><h5 class="text-muted">Total Spent</h5><h3>${{ total_spent|floatformat:2 }}</h3></div></div>
+    <div class="col-md-4"><div class="card stat-card p-4 animate-slide-up"><h5 class="text-muted">Available Crops</h5><h3>{{ available_crops }}</h3><a href="{% url 'crops:crop_list' %}" class="btn btn-primary btn-sm mt-2">Browse</a></div></div>
+</div>
+{% endif %}
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card p-4 animate-fade-in">
+            <h5><i class="bi bi-clock-history me-2"></i>Recent Orders</h5>
+            {% if recent_orders %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead><tr><th>ID</th><th>Crop</th><th>Client</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+                    <tbody>
+                    {% for order in recent_orders %}
+                    <tr>
+                        <td>#{{ order.id }}</td>
+                        <td>{{ order.crop.name }}</td>
+                        <td>{{ order.client.username }}</td>
+                        <td>${{ order.total_amount|floatformat:2 }}</td>
+                        <td><span class="badge bg-secondary">{{ order.get_status_display }}</span></td>
+                        <td>{{ order.created_at|date:"M d, Y" }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <a href="{% url 'orders:order_list' %}" class="btn btn-outline-primary btn-sm">View All</a>
+            {% else %}
+            <p class="text-muted">No orders yet.</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-lg-4">
+        {% if user.role == 'ADMIN' and recent_users %}
+        <div class="card p-4 animate-fade-in">
+            <h5><i class="bi bi-people me-2"></i>Recent Users</h5>
+            <ul class="list-group list-group-flush">
+                {% for u in recent_users %}
+                <li class="list-group-item d-flex justify-content-between"><span>{{ u.username }}</span><span class="badge bg-secondary">{{ u.get_role_display }}</span></li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        <div class="card p-4 mt-4 animate-fade-in">
+            <h5><i class="bi bi-lightning me-2"></i>Quick Actions</h5>
+            <div class="d-grid gap-2">
+                {% if user.role == 'FARMER' or user.role == 'ADMIN' %}<a href="{% url 'crops:crop_create' %}" class="btn btn-success"><i class="bi bi-plus-lg me-2"></i>Add Crop</a>{% endif %}
+                {% if user.role == 'CLIENT' or user.role == 'BROKER' %}<a href="{% url 'orders:order_create' %}" class="btn btn-primary"><i class="bi bi-cart-plus me-2"></i>Place Order</a>{% endif %}
+                <a href="{% url 'crops:crop_list' %}" class="btn btn-outline-success"><i class="bi bi-basket me-2"></i>Browse Crops</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

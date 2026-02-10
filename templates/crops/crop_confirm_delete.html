@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Delete Crop{% endblock %}
+{% block content %}
+<div class="card p-4 animate-fade-in">
+    <h4>Delete Crop</h4>
+    <p>Are you sure you want to delete "{{ crop.name }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a href="{% url 'crops:crop_detail' crop.pk %}" class="btn btn-outline-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

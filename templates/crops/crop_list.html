@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Crops - Crops Management{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center page-header animate-fade-in">
+    <div><h2><i class="bi bi-basket me-2"></i>Crops</h2><p class="text-muted mb-0">Browse and manage crops</p></div>
+    {% if user.role == 'FARMER' or user.role == 'ADMIN' %}
+    <a href="{% url 'crops:crop_create' %}" class="btn btn-success"><i class="bi bi-plus-lg me-2"></i>Add Crop</a>
+    {% endif %}
+</div>
+
+<div class="row g-4">
+    {% for crop in crops %}
+    <div class="col-md-4 col-lg-3 animate-slide-up">
+        <div class="card h-100">
+            <div class="card-body">
+                <span class="badge bg-success mb-2">{{ crop.get_crop_type_display }}</span>
+                <h5 class="card-title">{{ crop.name }}</h5>
+                <p class="card-text text-muted small">{{ crop.quantity }} {{ crop.unit }} • ${{ crop.price }}/{{ crop.unit }}</p>
+                <p class="card-text small"><i class="bi bi-geo-alt me-1"></i>{{ crop.location }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="badge bg-{% if crop.status == 'AVAILABLE' %}success{% elif crop.status == 'SOLD' %}danger{% else %}warning{% endif %}">{{ crop.get_status_display }}</span>
+                    <div>
+                        <a href="{% url 'crops:crop_detail' crop.pk %}" class="btn btn-sm btn-outline-primary">View</a>
+                        {% if user.role == 'FARMER' and crop.farmer == user or user.role == 'ADMIN' %}
+                        <a href="{% url 'crops:crop_update' crop.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12"><div class="card p-5 text-center text-muted"><i class="bi bi-basket" style="font-size: 3rem;"></i><p class="mt-2">No crops found.</p></div></div>
+    {% endfor %}
+</div>
+
+{% if is_paginated %}
+<nav class="mt-4"><ul class="pagination justify-content-center">
+    {% if page_obj.has_previous %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>{% endif %}
+    <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+    {% if page_obj.has_next %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>{% endif %}
+</ul></nav>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Orders - Crops Management{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center page-header animate-fade-in">
+    <div><h2><i class="bi bi-cart-check me-2"></i>Orders</h2><p class="text-muted mb-0">View and track your orders</p></div>
+    {% if user.role == 'CLIENT' or user.role == 'BROKER' %}
+    <a href="{% url 'orders:order_create' %}" class="btn btn-success"><i class="bi bi-cart-plus me-2"></i>Place Order</a>
+    {% endif %}
+</div>
+<div class="card p-4 animate-slide-up">
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead><tr><th>ID</th><th>Crop</th><th>Quantity</th><th>Amount</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+            <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>#{{ order.id }}</td>
+                <td>{{ order.crop.name }}</td>
+                <td>{{ order.quantity }} {{ order.crop.unit }}</td>
+                <td>${{ order.total_amount|floatformat:2 }}</td>
+                <td><span class="badge bg-secondary">{{ order.get_status_display }}</span></td>
+                <td>{{ order.created_at|date:"M d, Y" }}</td>
+                <td>
+                    <a href="{% url 'orders:order_detail' order.pk %}" class="btn btn-sm btn-outline-primary">View</a>
+                    {% if user.role == 'ADMIN' or user.role == 'BROKER' or user.role == 'FARMER' %}
+                    <a href="{% url 'orders:order_status_update' order.pk %}" class="btn btn-sm btn-outline-success">Update Status</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7" class="text-center text-muted">No orders found.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% if is_paginated %}
+<nav class="mt-4"><ul class="pagination justify-content-center">
+    {% if page_obj.has_previous %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>{% endif %}
+    {% if page_obj.has_next %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>{% endif %}
+</ul></nav>
+{% endif %}
+{% endblock %}
